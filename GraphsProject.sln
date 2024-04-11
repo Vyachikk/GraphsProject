@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphsProject", "GraphsProject\GraphsProject.vcxproj", "{68A52FFA-5388-4569-AA66-7B7C1E6E606C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{14ABBEF4-6AEF-40A9-AFA6-A3FC82509123}"
+	ProjectSection(SolutionItems) = preProject
+		x64\Debug\GraphDLL.lib = x64\Debug\GraphDLL.lib
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Debug|x64.ActiveCfg = Debug|x64
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Debug|x64.Build.0 = Debug|x64
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Debug|x86.ActiveCfg = Debug|Win32
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Debug|x86.Build.0 = Debug|Win32
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Release|x64.ActiveCfg = Release|x64
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Release|x64.Build.0 = Release|x64
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Release|x86.ActiveCfg = Release|Win32
+		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2873B2C-582B-49EE-898B-B06654774DD1}
+	EndGlobalSection
+EndGlobal
