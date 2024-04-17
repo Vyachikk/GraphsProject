@@ -1,5 +1,6 @@
-#pragma once
+п»ї#pragma once
 #include <Windows.h>
+#include <typeinfo>
 #include "Graph.h"
 
 namespace GraphsProject {
@@ -13,7 +14,7 @@ namespace GraphsProject {
 	using namespace System::Collections::Generic;
 
 	/// <summary>
-	/// Сводка для MainForm
+	/// РЎРІРѕРґРєР° РґР»СЏ MainForm
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
@@ -27,6 +28,8 @@ namespace GraphsProject {
 		Node^ firstSelectedNode;
 		Node^ secondSelectedNode;
 		Node^ movingNode;
+
+		System::Object^ clickedElement;
 
 		Point lastMousePosition;
 	public:
@@ -48,7 +51,7 @@ namespace GraphsProject {
 
 	protected:
 		/// <summary>
-		/// Освободить все используемые ресурсы.
+		/// РћСЃРІРѕР±РѕРґРёС‚СЊ РІСЃРµ РёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ СЂРµСЃСѓСЂСЃС‹.
 		/// </summary>
 		~MainForm()
 		{
@@ -59,66 +62,49 @@ namespace GraphsProject {
 		}
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 	private: System::Windows::Forms::ComboBox^ vertices_comboBox;
-
 	private: System::Windows::Forms::ComboBox^ links_comboBox;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel3;
 	private: System::Windows::Forms::Button^ addLinkButton;
-
 	private: System::Windows::Forms::Button^ addVertexButton;
-
 	private: System::Windows::Forms::ComboBox^ findPathMethod_comboBox;
+	private: System::Windows::Forms::Label^ Nodes_Label;
 	private: System::Windows::Forms::Button^ findPathButton;
-
 	private: System::Windows::Forms::PictureBox^ mainCanvas;
-
 	private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::Button^ deleteButton;
-
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel2;
 	private: System::Windows::Forms::Label^ label1;
-
 	private: System::Windows::Forms::ComboBox^ startPoint_comboBox;
 	private: System::Windows::Forms::ComboBox^ endPoint_comboBox;
-	private: System::Windows::Forms::Label^ label6;
-	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::TextBox^ textBox1;
 	private: System::Windows::Forms::TextBox^ textBox2;
-
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel5;
-	private: System::Windows::Forms::Label^ label6;
-	private: System::Windows::Forms::Label^ label7;
-	private: System::Windows::Forms::TextBox^ nodeName_textBox;
+	private: System::Windows::Forms::Label^ Name_Label;
+	private: System::Windows::Forms::TextBox^ Name_textBox;
 	private: System::Windows::Forms::Label^ label5;
-	private: System::Windows::Forms::TextBox^ edgeWeight_textBox;
-
-
-	private: System::Windows::Forms::Label^ label8;
-	private: System::Windows::Forms::Label^ label9;
-	private: System::Windows::Forms::TextBox^ nodeSize_textBox;
-	private: System::Windows::Forms::TextBox^ edgeThickness_textBox;
-
-
-	private: System::Windows::Forms::Label^ label10;
+	private: System::Windows::Forms::NumericUpDown^ Size_numeric;
+	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel4;
+	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::Button^ colorPicker_Button;
-
+	private: System::Windows::Forms::Label^ Size_Label;
 	private: System::Windows::Forms::ColorDialog^ colorDialog1;
 
 	protected:
 
 	private:
 		/// <summary>
-		/// Обязательная переменная конструктора.
+		/// РћР±СЏР·Р°С‚РµР»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°.
 		/// </summary>
 		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Требуемый метод для поддержки конструктора — не изменяйте 
-		/// содержимое этого метода с помощью редактора кода.
+		/// РўСЂРµР±СѓРµРјС‹Р№ РјРµС‚РѕРґ РґР»СЏ РїРѕРґРґРµСЂР¶РєРё РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° вЂ” РЅРµ РёР·РјРµРЅСЏР№С‚Рµ 
+		/// СЃРѕРґРµСЂР¶РёРјРѕРµ СЌС‚РѕРіРѕ РјРµС‚РѕРґР° СЃ РїРѕРјРѕС‰СЊСЋ СЂРµРґР°РєС‚РѕСЂР° РєРѕРґР°.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -128,7 +114,7 @@ namespace GraphsProject {
 			this->addLinkButton = (gcnew System::Windows::Forms::Button());
 			this->addVertexButton = (gcnew System::Windows::Forms::Button());
 			this->deleteButton = (gcnew System::Windows::Forms::Button());
-			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->Nodes_Label = (gcnew System::Windows::Forms::Label());
 			this->vertices_comboBox = (gcnew System::Windows::Forms::ComboBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->links_comboBox = (gcnew System::Windows::Forms::ComboBox());
@@ -142,16 +128,13 @@ namespace GraphsProject {
 			this->findPathButton = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->tableLayoutPanel5 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->Name_Label = (gcnew System::Windows::Forms::Label());
+			this->Name_textBox = (gcnew System::Windows::Forms::TextBox());
+			this->Size_Label = (gcnew System::Windows::Forms::Label());
+			this->tableLayoutPanel4 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->label7 = (gcnew System::Windows::Forms::Label());
-			this->nodeName_textBox = (gcnew System::Windows::Forms::TextBox());
-			this->edgeWeight_textBox = (gcnew System::Windows::Forms::TextBox());
-			this->label8 = (gcnew System::Windows::Forms::Label());
-			this->label9 = (gcnew System::Windows::Forms::Label());
-			this->nodeSize_textBox = (gcnew System::Windows::Forms::TextBox());
-			this->edgeThickness_textBox = (gcnew System::Windows::Forms::TextBox());
-			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->colorPicker_Button = (gcnew System::Windows::Forms::Button());
+			this->Size_numeric = (gcnew System::Windows::Forms::NumericUpDown());
 			this->mainCanvas = (gcnew System::Windows::Forms::PictureBox());
 			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->tableLayoutPanel1->SuspendLayout();
@@ -160,6 +143,8 @@ namespace GraphsProject {
 			this->tableLayoutPanel2->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->tableLayoutPanel5->SuspendLayout();
+			this->tableLayoutPanel4->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Size_numeric))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->mainCanvas))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -184,7 +169,7 @@ namespace GraphsProject {
 			this->flowLayoutPanel1->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->flowLayoutPanel1->Controls->Add(this->tableLayoutPanel3);
 			this->flowLayoutPanel1->Controls->Add(this->deleteButton);
-			this->flowLayoutPanel1->Controls->Add(this->label2);
+			this->flowLayoutPanel1->Controls->Add(this->Nodes_Label);
 			this->flowLayoutPanel1->Controls->Add(this->vertices_comboBox);
 			this->flowLayoutPanel1->Controls->Add(this->label3);
 			this->flowLayoutPanel1->Controls->Add(this->links_comboBox);
@@ -193,9 +178,9 @@ namespace GraphsProject {
 			this->flowLayoutPanel1->Controls->Add(this->tableLayoutPanel2);
 			this->flowLayoutPanel1->Controls->Add(this->findPathButton);
 			this->flowLayoutPanel1->Controls->Add(this->groupBox1);
-			this->flowLayoutPanel1->Location = System::Drawing::Point(1045, 91);
+			this->flowLayoutPanel1->Location = System::Drawing::Point(1045, 77);
 			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
-			this->flowLayoutPanel1->Size = System::Drawing::Size(312, 555);
+			this->flowLayoutPanel1->Size = System::Drawing::Size(312, 582);
 			this->flowLayoutPanel1->TabIndex = 2;
 			// 
 			// tableLayoutPanel3
@@ -223,7 +208,7 @@ namespace GraphsProject {
 			this->addLinkButton->Name = L"addLinkButton";
 			this->addLinkButton->Size = System::Drawing::Size(147, 47);
 			this->addLinkButton->TabIndex = 1;
-			this->addLinkButton->Text = L"Добавление связей";
+			this->addLinkButton->Text = L"Р”РѕР±Р°РІР»РµРЅРёРµ СЃРІСЏР·РµР№";
 			this->addLinkButton->UseVisualStyleBackColor = true;
 			this->addLinkButton->Click += gcnew System::EventHandler(this, &MainForm::addLinkButton_Click);
 			// 
@@ -236,7 +221,7 @@ namespace GraphsProject {
 			this->addVertexButton->Name = L"addVertexButton";
 			this->addVertexButton->Size = System::Drawing::Size(147, 47);
 			this->addVertexButton->TabIndex = 0;
-			this->addVertexButton->Text = L"Добавление вершин";
+			this->addVertexButton->Text = L"Р”РѕР±Р°РІР»РµРЅРёРµ РІРµСЂС€РёРЅ";
 			this->addVertexButton->UseVisualStyleBackColor = true;
 			this->addVertexButton->Click += gcnew System::EventHandler(this, &MainForm::addVertexButton_Click);
 			// 
@@ -248,20 +233,20 @@ namespace GraphsProject {
 			this->deleteButton->Name = L"deleteButton";
 			this->deleteButton->Size = System::Drawing::Size(303, 49);
 			this->deleteButton->TabIndex = 8;
-			this->deleteButton->Text = L"Удаление элементов";
+			this->deleteButton->Text = L"РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ";
 			this->deleteButton->UseVisualStyleBackColor = true;
 			this->deleteButton->Click += gcnew System::EventHandler(this, &MainForm::deleteButton_Click);
 			// 
-			// label2
+			// Nodes_Label
 			// 
-			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->Nodes_Label->AutoSize = true;
+			this->Nodes_Label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label2->Location = System::Drawing::Point(3, 115);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(66, 16);
-			this->label2->TabIndex = 5;
-			this->label2->Text = L"Вершины";
+			this->Nodes_Label->Location = System::Drawing::Point(3, 115);
+			this->Nodes_Label->Name = L"Nodes_Label";
+			this->Nodes_Label->Size = System::Drawing::Size(66, 16);
+			this->Nodes_Label->TabIndex = 5;
+			this->Nodes_Label->Text = L"Р’РµСЂС€РёРЅС‹";
 			// 
 			// vertices_comboBox
 			// 
@@ -273,6 +258,7 @@ namespace GraphsProject {
 			this->vertices_comboBox->Name = L"vertices_comboBox";
 			this->vertices_comboBox->Size = System::Drawing::Size(306, 24);
 			this->vertices_comboBox->TabIndex = 4;
+			this->vertices_comboBox->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::comboBox_SelectedIndexChanged);
 			// 
 			// label3
 			// 
@@ -283,7 +269,7 @@ namespace GraphsProject {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(47, 16);
 			this->label3->TabIndex = 6;
-			this->label3->Text = L"Связи";
+			this->label3->Text = L"РЎРІСЏР·Рё";
 			// 
 			// links_comboBox
 			// 
@@ -291,11 +277,11 @@ namespace GraphsProject {
 			this->links_comboBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->links_comboBox->FormattingEnabled = true;
-			this->links_comboBox->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"A - B", L"B - C", L"G - F", L"F - E", L"A - D" });
 			this->links_comboBox->Location = System::Drawing::Point(3, 180);
 			this->links_comboBox->Name = L"links_comboBox";
 			this->links_comboBox->Size = System::Drawing::Size(306, 24);
 			this->links_comboBox->TabIndex = 3;
+			this->links_comboBox->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::comboBox_SelectedIndexChanged);
 			// 
 			// label4
 			// 
@@ -306,7 +292,7 @@ namespace GraphsProject {
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(132, 16);
 			this->label4->TabIndex = 7;
-			this->label4->Text = L"Метод поиска пути";
+			this->label4->Text = L"РњРµС‚РѕРґ РїРѕРёСЃРєР° РїСѓС‚Рё";
 			// 
 			// findPathMethod_comboBox
 			// 
@@ -349,7 +335,7 @@ namespace GraphsProject {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(120, 16);
 			this->label1->TabIndex = 0;
-			this->label1->Text = L"Начальная точка";
+			this->label1->Text = L"РќР°С‡Р°Р»СЊРЅР°СЏ С‚РѕС‡РєР°";
 			// 
 			// startPoint_comboBox
 			// 
@@ -381,7 +367,7 @@ namespace GraphsProject {
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(111, 16);
 			this->label5->TabIndex = 4;
-			this->label5->Text = L"Конечная точка";
+			this->label5->Text = L"РљРѕРЅРµС‡РЅР°СЏ С‚РѕС‡РєР°";
 			// 
 			// findPathButton
 			// 
@@ -392,7 +378,7 @@ namespace GraphsProject {
 			this->findPathButton->Name = L"findPathButton";
 			this->findPathButton->Size = System::Drawing::Size(306, 40);
 			this->findPathButton->TabIndex = 5;
-			this->findPathButton->Text = L"Выполнить поиск пути";
+			this->findPathButton->Text = L"Р’С‹РїРѕР»РЅРёС‚СЊ РїРѕРёСЃРє РїСѓС‚Рё";
 			this->findPathButton->UseVisualStyleBackColor = true;
 			this->findPathButton->Click += gcnew System::EventHandler(this, &MainForm::findPathButton_Click);
 			// 
@@ -403,28 +389,21 @@ namespace GraphsProject {
 				static_cast<System::Byte>(204)));
 			this->groupBox1->Location = System::Drawing::Point(3, 362);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(312, 190);
+			this->groupBox1->Size = System::Drawing::Size(312, 217);
 			this->groupBox1->TabIndex = 10;
 			this->groupBox1->TabStop = false;
-			this->groupBox1->Text = L"Свойства элемента";
+			this->groupBox1->Text = L"РЎРІРѕР№СЃС‚РІР° СЌР»РµРјРµРЅС‚Р°";
 			// 
 			// tableLayoutPanel5
 			// 
-			this->tableLayoutPanel5->ColumnCount = 2;
+			this->tableLayoutPanel5->ColumnCount = 1;
 			this->tableLayoutPanel5->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				50)));
-			this->tableLayoutPanel5->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				50)));
-			this->tableLayoutPanel5->Controls->Add(this->label6, 0, 0);
-			this->tableLayoutPanel5->Controls->Add(this->label7, 1, 0);
-			this->tableLayoutPanel5->Controls->Add(this->nodeName_textBox, 0, 1);
-			this->tableLayoutPanel5->Controls->Add(this->edgeWeight_textBox, 1, 1);
-			this->tableLayoutPanel5->Controls->Add(this->label8, 0, 2);
-			this->tableLayoutPanel5->Controls->Add(this->label9, 1, 2);
-			this->tableLayoutPanel5->Controls->Add(this->nodeSize_textBox, 0, 3);
-			this->tableLayoutPanel5->Controls->Add(this->edgeThickness_textBox, 1, 3);
-			this->tableLayoutPanel5->Controls->Add(this->label10, 0, 4);
-			this->tableLayoutPanel5->Controls->Add(this->colorPicker_Button, 1, 4);
+			this->tableLayoutPanel5->Controls->Add(this->Name_Label, 0, 0);
+			this->tableLayoutPanel5->Controls->Add(this->Name_textBox, 0, 1);
+			this->tableLayoutPanel5->Controls->Add(this->Size_Label, 0, 2);
+			this->tableLayoutPanel5->Controls->Add(this->tableLayoutPanel4, 0, 4);
+			this->tableLayoutPanel5->Controls->Add(this->Size_numeric, 0, 3);
 			this->tableLayoutPanel5->Location = System::Drawing::Point(6, 19);
 			this->tableLayoutPanel5->Name = L"tableLayoutPanel5";
 			this->tableLayoutPanel5->RowCount = 5;
@@ -433,119 +412,93 @@ namespace GraphsProject {
 			this->tableLayoutPanel5->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 20)));
 			this->tableLayoutPanel5->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 20)));
 			this->tableLayoutPanel5->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 20)));
-			this->tableLayoutPanel5->Size = System::Drawing::Size(297, 165);
+			this->tableLayoutPanel5->Size = System::Drawing::Size(297, 192);
 			this->tableLayoutPanel5->TabIndex = 11;
 			// 
-			// label6
+			// Name_Label
 			// 
-			this->label6->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->label6->AutoSize = true;
-			this->label6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->Name_Label->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Name_Label->AutoSize = true;
+			this->Name_Label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label6->Location = System::Drawing::Point(3, 17);
-			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(94, 16);
-			this->label6->TabIndex = 0;
-			this->label6->Text = L"Имя вершины";
+			this->Name_Label->Location = System::Drawing::Point(3, 22);
+			this->Name_Label->Name = L"Name_Label";
+			this->Name_Label->Size = System::Drawing::Size(94, 16);
+			this->Name_Label->TabIndex = 0;
+			this->Name_Label->Text = L"РРјСЏ РІРµСЂС€РёРЅС‹";
+			// 
+			// Name_textBox
+			// 
+			this->Name_textBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->Name_textBox->Location = System::Drawing::Point(3, 41);
+			this->Name_textBox->MaxLength = 64;
+			this->Name_textBox->Name = L"Name_textBox";
+			this->Name_textBox->Size = System::Drawing::Size(142, 22);
+			this->Name_textBox->TabIndex = 2;
+			this->Name_textBox->TextChanged += gcnew System::EventHandler(this, &MainForm::Name_textBox_TextChanged);
+			// 
+			// Size_Label
+			// 
+			this->Size_Label->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Size_Label->AutoSize = true;
+			this->Size_Label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->Size_Label->Location = System::Drawing::Point(3, 98);
+			this->Size_Label->Name = L"Size_Label";
+			this->Size_Label->Size = System::Drawing::Size(118, 16);
+			this->Size_Label->TabIndex = 4;
+			this->Size_Label->Text = L"Р Р°Р·РјРµСЂ РІРµСЂС€РёРЅС‹";
+			// 
+			// tableLayoutPanel4
+			// 
+			this->tableLayoutPanel4->ColumnCount = 2;
+			this->tableLayoutPanel4->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				50)));
+			this->tableLayoutPanel4->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				50)));
+			this->tableLayoutPanel4->Controls->Add(this->label7, 0, 0);
+			this->tableLayoutPanel4->Controls->Add(this->colorPicker_Button, 1, 0);
+			this->tableLayoutPanel4->Location = System::Drawing::Point(3, 155);
+			this->tableLayoutPanel4->Name = L"tableLayoutPanel4";
+			this->tableLayoutPanel4->RowCount = 1;
+			this->tableLayoutPanel4->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
+			this->tableLayoutPanel4->Size = System::Drawing::Size(291, 34);
+			this->tableLayoutPanel4->TabIndex = 7;
 			// 
 			// label7
 			// 
-			this->label7->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->label7->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Right));
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label7->Location = System::Drawing::Point(151, 17);
+			this->label7->Location = System::Drawing::Point(3, 9);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(72, 16);
-			this->label7->TabIndex = 1;
-			this->label7->Text = L"Вес связи";
-			// 
-			// nodeName_textBox
-			// 
-			this->nodeName_textBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->nodeName_textBox->Location = System::Drawing::Point(3, 36);
-			this->nodeName_textBox->MaxLength = 64;
-			this->nodeName_textBox->Name = L"nodeName_textBox";
-			this->nodeName_textBox->Size = System::Drawing::Size(141, 22);
-			this->nodeName_textBox->TabIndex = 2;
-			// 
-			// edgeWeight_textBox
-			// 
-			this->edgeWeight_textBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->edgeWeight_textBox->Location = System::Drawing::Point(151, 36);
-			this->edgeWeight_textBox->MaxLength = 64;
-			this->edgeWeight_textBox->Name = L"edgeWeight_textBox";
-			this->edgeWeight_textBox->Size = System::Drawing::Size(141, 22);
-			this->edgeWeight_textBox->TabIndex = 3;
-			// 
-			// label8
-			// 
-			this->label8->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->label8->AutoSize = true;
-			this->label8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label8->Location = System::Drawing::Point(3, 83);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(118, 16);
-			this->label8->TabIndex = 4;
-			this->label8->Text = L"Размер вершины";
-			// 
-			// label9
-			// 
-			this->label9->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->label9->AutoSize = true;
-			this->label9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label9->Location = System::Drawing::Point(151, 83);
-			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(106, 16);
-			this->label9->TabIndex = 5;
-			this->label9->Text = L"Толщина связи";
-			// 
-			// nodeSize_textBox
-			// 
-			this->nodeSize_textBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->nodeSize_textBox->Location = System::Drawing::Point(3, 102);
-			this->nodeSize_textBox->MaxLength = 64;
-			this->nodeSize_textBox->Name = L"nodeSize_textBox";
-			this->nodeSize_textBox->Size = System::Drawing::Size(141, 22);
-			this->nodeSize_textBox->TabIndex = 6;
-			// 
-			// edgeThickness_textBox
-			// 
-			this->edgeThickness_textBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->edgeThickness_textBox->Location = System::Drawing::Point(151, 102);
-			this->edgeThickness_textBox->MaxLength = 64;
-			this->edgeThickness_textBox->Name = L"edgeThickness_textBox";
-			this->edgeThickness_textBox->Size = System::Drawing::Size(141, 22);
-			this->edgeThickness_textBox->TabIndex = 7;
-			// 
-			// label10
-			// 
-			this->label10->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Right));
-			this->label10->AutoSize = true;
-			this->label10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label10->Location = System::Drawing::Point(3, 140);
-			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(142, 16);
-			this->label10->TabIndex = 8;
-			this->label10->Text = L"Цвет";
-			this->label10->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->label7->Size = System::Drawing::Size(139, 16);
+			this->label7->TabIndex = 0;
+			this->label7->Text = L"Р¦РІРµС‚";
+			this->label7->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// colorPicker_Button
 			// 
 			this->colorPicker_Button->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->colorPicker_Button->Location = System::Drawing::Point(151, 135);
+			this->colorPicker_Button->Location = System::Drawing::Point(148, 3);
 			this->colorPicker_Button->Name = L"colorPicker_Button";
-			this->colorPicker_Button->Size = System::Drawing::Size(143, 27);
-			this->colorPicker_Button->TabIndex = 9;
+			this->colorPicker_Button->Size = System::Drawing::Size(140, 28);
+			this->colorPicker_Button->TabIndex = 1;
 			this->colorPicker_Button->UseVisualStyleBackColor = true;
+			this->colorPicker_Button->Click += gcnew System::EventHandler(this, &MainForm::colorPicker_Button_Click);
+			// 
+			// Size_numeric
+			// 
+			this->Size_numeric->Location = System::Drawing::Point(3, 117);
+			this->Size_numeric->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->Size_numeric->Name = L"Size_numeric";
+			this->Size_numeric->Size = System::Drawing::Size(142, 22);
+			this->Size_numeric->TabIndex = 8;
+			this->Size_numeric->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->Size_numeric->ValueChanged += gcnew System::EventHandler(this, &MainForm::Size_numeric_ValueChanged);
 			// 
 			// mainCanvas
 			// 
@@ -577,12 +530,15 @@ namespace GraphsProject {
 			this->groupBox1->ResumeLayout(false);
 			this->tableLayoutPanel5->ResumeLayout(false);
 			this->tableLayoutPanel5->PerformLayout();
+			this->tableLayoutPanel4->ResumeLayout(false);
+			this->tableLayoutPanel4->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Size_numeric))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->mainCanvas))->EndInit();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-	public:
+	private:
 		System::Void addVertexButton_Click(System::Object^ sender, System::EventArgs^ e);
 		System::Void mainCanvas_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 		System::Void mainCanvas_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
@@ -593,14 +549,24 @@ namespace GraphsProject {
 		System::Void deleteButton_Click(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void findPathButton_Click(System::Object^ sender, System::EventArgs^ e) {
-			
+
 		}
 
-		Node^ FindClickedNode(Point clickLocation, List<Node^>^ nodes);
-		Edge^ FindClickedEdge(Point clickLocation, List<Edge^>^ edges);
+		System::Object^ FindClickedElement(Point clickLocation, List<Node^>^ nodes, List<Edge^>^ edges);
 
 		bool IsMouseOverEdge(Point clickLocation, Edge^ edge);
 		double PointToSegmentSquaredDistance(Point p, Point start, Point end);
 		double PointToPointSquaredDistance(Point p1, Point p2);
+		void DrawArrow(Graphics^ g, Pen^ pen, PointF start, PointF end, float arrowSize, float nodeSize);
+		void UpdateElementData(Object^ element);
+
+		void AddNode(int x, int y);
+		void AddEdge(int x, int y);
+		void DeleteElement(int x, int y);
+
+		System::Void colorPicker_Button_Click(System::Object^ sender, System::EventArgs^ e);
+		System::Void Name_textBox_TextChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void Size_numeric_ValueChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void comboBox_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
 	};
 }
