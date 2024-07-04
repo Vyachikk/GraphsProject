@@ -1,10 +1,17 @@
 ﻿#pragma once
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include <Windows.h>
-#include <typeinfo>
-#include "Graph.h"
+#include <fstream>
+#include <iostream>
+#include "ManagedGraphWrapper.h"
+#include "ManagedNodeWrapper.h"
+#include "ManagedEdgeWrapper.h"
 
-namespace GraphsProject {
-
+namespace GraphsProject 
+{
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -19,34 +26,33 @@ namespace GraphsProject {
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	private:
-		Graph^ graph_;
+		ManagedGraphWrapper^ graph_;
 
 		bool addNode;
 		bool addLink;
 		bool deleteElements;
 
-		Node^ firstSelectedNode;
-		Node^ secondSelectedNode;
-		Node^ movingNode;
+		ManagedNodeWrapper^ firstSelectedNode;
+		ManagedNodeWrapper^ secondSelectedNode;
+		ManagedNodeWrapper^ movingNode;
 
 		System::Object^ clickedElement;
-
 		Point lastMousePosition;
 	public:
 
-		MainForm(void)
+		MainForm::MainForm(void)
 		{
 			addNode = false;
 			addLink = false;
 			deleteElements = false;
 
-			firstSelectedNode = nullptr;
-			secondSelectedNode = nullptr;
+			// Создание экземпляра управляемого графа
+			graph_ = gcnew ManagedGraphWrapper();
 
-			movingNode = nullptr;
-
-			graph_ = gcnew Graph();
 			InitializeComponent();
+
+			// Генерация случайного графа
+			GenerateRandomGraph();
 		}
 
 	protected:
@@ -55,6 +61,8 @@ namespace GraphsProject {
 		/// </summary>
 		~MainForm()
 		{
+			delete graph_;
+
 			if (components)
 			{
 				delete components;
@@ -92,6 +100,9 @@ namespace GraphsProject {
 	private: System::Windows::Forms::Button^ colorPicker_Button;
 	private: System::Windows::Forms::Label^ Size_Label;
 	private: System::Windows::Forms::ColorDialog^ colorDialog1;
+	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel6;
+	private: System::Windows::Forms::Button^ equalRange_Button;
+	private: System::Windows::Forms::NumericUpDown^ EdgeWeigh_Numeric;
 
 	protected:
 
@@ -135,6 +146,9 @@ namespace GraphsProject {
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->colorPicker_Button = (gcnew System::Windows::Forms::Button());
 			this->Size_numeric = (gcnew System::Windows::Forms::NumericUpDown());
+			this->tableLayoutPanel6 = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->equalRange_Button = (gcnew System::Windows::Forms::Button());
+			this->EdgeWeigh_Numeric = (gcnew System::Windows::Forms::NumericUpDown());
 			this->mainCanvas = (gcnew System::Windows::Forms::PictureBox());
 			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->tableLayoutPanel1->SuspendLayout();
@@ -145,6 +159,8 @@ namespace GraphsProject {
 			this->tableLayoutPanel5->SuspendLayout();
 			this->tableLayoutPanel4->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Size_numeric))->BeginInit();
+			this->tableLayoutPanel6->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->EdgeWeigh_Numeric))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->mainCanvas))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -178,9 +194,10 @@ namespace GraphsProject {
 			this->flowLayoutPanel1->Controls->Add(this->tableLayoutPanel2);
 			this->flowLayoutPanel1->Controls->Add(this->findPathButton);
 			this->flowLayoutPanel1->Controls->Add(this->groupBox1);
-			this->flowLayoutPanel1->Location = System::Drawing::Point(1045, 77);
+			this->flowLayoutPanel1->Controls->Add(this->tableLayoutPanel6);
+			this->flowLayoutPanel1->Location = System::Drawing::Point(1045, 53);
 			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
-			this->flowLayoutPanel1->Size = System::Drawing::Size(312, 582);
+			this->flowLayoutPanel1->Size = System::Drawing::Size(312, 631);
 			this->flowLayoutPanel1->TabIndex = 2;
 			// 
 			// tableLayoutPanel3
@@ -300,6 +317,7 @@ namespace GraphsProject {
 			this->findPathMethod_comboBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->findPathMethod_comboBox->FormattingEnabled = true;
+			this->findPathMethod_comboBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Дейкстра", L"А*", L"BFS" });
 			this->findPathMethod_comboBox->Location = System::Drawing::Point(3, 226);
 			this->findPathMethod_comboBox->Name = L"findPathMethod_comboBox";
 			this->findPathMethod_comboBox->Size = System::Drawing::Size(306, 24);
@@ -389,7 +407,7 @@ namespace GraphsProject {
 				static_cast<System::Byte>(204)));
 			this->groupBox1->Location = System::Drawing::Point(3, 362);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(312, 217);
+			this->groupBox1->Size = System::Drawing::Size(306, 217);
 			this->groupBox1->TabIndex = 10;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Свойства элемента";
@@ -436,7 +454,7 @@ namespace GraphsProject {
 			this->Name_textBox->Name = L"Name_textBox";
 			this->Name_textBox->Size = System::Drawing::Size(142, 22);
 			this->Name_textBox->TabIndex = 2;
-			this->Name_textBox->TextChanged += gcnew System::EventHandler(this, &MainForm::Name_textBox_TextChanged);
+			this->Name_textBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MainForm::Name_textBox_KeyDown);
 			// 
 			// Size_Label
 			// 
@@ -493,15 +511,54 @@ namespace GraphsProject {
 			// Size_numeric
 			// 
 			this->Size_numeric->Location = System::Drawing::Point(3, 117);
-			this->Size_numeric->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->Size_numeric->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->Size_numeric->Name = L"Size_numeric";
 			this->Size_numeric->Size = System::Drawing::Size(142, 22);
 			this->Size_numeric->TabIndex = 8;
-			this->Size_numeric->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->Size_numeric->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->Size_numeric->ValueChanged += gcnew System::EventHandler(this, &MainForm::Size_numeric_ValueChanged);
+			// 
+			// tableLayoutPanel6
+			// 
+			this->tableLayoutPanel6->ColumnCount = 2;
+			this->tableLayoutPanel6->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				70)));
+			this->tableLayoutPanel6->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				30)));
+			this->tableLayoutPanel6->Controls->Add(this->equalRange_Button, 0, 0);
+			this->tableLayoutPanel6->Controls->Add(this->EdgeWeigh_Numeric, 1, 0);
+			this->tableLayoutPanel6->Location = System::Drawing::Point(3, 585);
+			this->tableLayoutPanel6->Name = L"tableLayoutPanel6";
+			this->tableLayoutPanel6->RowCount = 1;
+			this->tableLayoutPanel6->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
+			this->tableLayoutPanel6->Size = System::Drawing::Size(306, 42);
+			this->tableLayoutPanel6->TabIndex = 11;
+			// 
+			// equalRange_Button
+			// 
+			this->equalRange_Button->Anchor = System::Windows::Forms::AnchorStyles::None;
+			this->equalRange_Button->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+			this->equalRange_Button->Location = System::Drawing::Point(3, 5);
+			this->equalRange_Button->Name = L"equalRange_Button";
+			this->equalRange_Button->Size = System::Drawing::Size(208, 32);
+			this->equalRange_Button->TabIndex = 12;
+			this->equalRange_Button->Text = L"Вывести все грани с весом";
+			this->equalRange_Button->UseVisualStyleBackColor = true;
+			this->equalRange_Button->Click += gcnew System::EventHandler(this, &MainForm::equalRange_Button_Click);
+			// 
+			// EdgeWeigh_Numeric
+			// 
+			this->EdgeWeigh_Numeric->Anchor = System::Windows::Forms::AnchorStyles::Left;
+			this->EdgeWeigh_Numeric->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->EdgeWeigh_Numeric->Location = System::Drawing::Point(217, 10);
+			this->EdgeWeigh_Numeric->Name = L"EdgeWeigh_Numeric";
+			this->EdgeWeigh_Numeric->Size = System::Drawing::Size(86, 22);
+			this->EdgeWeigh_Numeric->TabIndex = 13;
 			// 
 			// mainCanvas
 			// 
+			this->mainCanvas->BackColor = System::Drawing::Color::White;
 			this->mainCanvas->Location = System::Drawing::Point(3, 3);
 			this->mainCanvas->Name = L"mainCanvas";
 			this->mainCanvas->Size = System::Drawing::Size(1036, 731);
@@ -533,6 +590,8 @@ namespace GraphsProject {
 			this->tableLayoutPanel4->ResumeLayout(false);
 			this->tableLayoutPanel4->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Size_numeric))->EndInit();
+			this->tableLayoutPanel6->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->EdgeWeigh_Numeric))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->mainCanvas))->EndInit();
 			this->ResumeLayout(false);
 
@@ -547,26 +606,27 @@ namespace GraphsProject {
 		System::Void mainCanvas_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 		System::Void addLinkButton_Click(System::Object^ sender, System::EventArgs^ e);
 		System::Void deleteButton_Click(System::Object^ sender, System::EventArgs^ e);
+		System::Void findPathButton_Click(System::Object^ sender, System::EventArgs^ e);
+		System::Void colorPicker_Button_Click(System::Object^ sender, System::EventArgs^ e);
+		System::Void Size_numeric_ValueChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void comboBox_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void equalRange_Button_Click(System::Object^ sender, System::EventArgs^ e);
+		System::Void Name_textBox_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
 
-		System::Void findPathButton_Click(System::Object^ sender, System::EventArgs^ e) {
-
-		}
-
-		System::Object^ FindClickedElement(Point clickLocation, List<Node^>^ nodes, List<Edge^>^ edges);
-
-		bool IsMouseOverEdge(Point clickLocation, Edge^ edge);
+		System::Object^ FindClickedElement(Point clickLocation, List<ManagedNodeWrapper^>^ nodes, List<ManagedEdgeWrapper^>^ edges);
+		String^ GetPathString(List<ManagedNodeWrapper^>^ path);
+		bool IsMouseOverEdge(Point clickLocation, ManagedEdgeWrapper^ edge);
 		double PointToSegmentSquaredDistance(Point p, Point start, Point end);
 		double PointToPointSquaredDistance(Point p1, Point p2);
 		void DrawArrow(Graphics^ g, Pen^ pen, PointF start, PointF end, float arrowSize, float nodeSize);
 		void UpdateElementData(Object^ element);
 
+		void UpdateComboBoxes();
+
 		void AddNode(int x, int y);
 		void AddEdge(int x, int y);
 		void DeleteElement(int x, int y);
 
-		System::Void colorPicker_Button_Click(System::Object^ sender, System::EventArgs^ e);
-		System::Void Name_textBox_TextChanged(System::Object^ sender, System::EventArgs^ e);
-		System::Void Size_numeric_ValueChanged(System::Object^ sender, System::EventArgs^ e);
-		System::Void comboBox_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
+		void GenerateRandomGraph();
 	};
 }

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphsProject", "GraphsProj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{14ABBEF4-6AEF-40A9-AFA6-A3FC82509123}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphDLL", "GraphDLL\GraphDLL.vcxproj", "{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,6 +25,14 @@ Global
 		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Release|x64.Build.0 = Release|x64
 		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Release|x86.ActiveCfg = Release|Win32
 		{68A52FFA-5388-4569-AA66-7B7C1E6E606C}.Release|x86.Build.0 = Release|Win32
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Debug|x64.ActiveCfg = Debug|x64
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Debug|x64.Build.0 = Debug|x64
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Debug|x86.ActiveCfg = Debug|Win32
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Debug|x86.Build.0 = Debug|Win32
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Release|x64.ActiveCfg = Release|x64
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Release|x64.Build.0 = Release|x64
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Release|x86.ActiveCfg = Release|Win32
+		{27DFA63E-4D85-4147-A0C4-25CB68EF9A7A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
